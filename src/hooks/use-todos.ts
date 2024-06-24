@@ -18,7 +18,7 @@ export default function useTodos() {
     // }
 
     const filteredTodos = input.todos.filter(
-      (todo) => typeof todo.content == "string"
+      (todo) => typeof todo.content == "string" && todo.id
     ) as TodoEntry[];
 
     dispatch({ payload: filteredTodos, type: "FETCH" });

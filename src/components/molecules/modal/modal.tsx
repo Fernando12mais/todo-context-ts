@@ -10,9 +10,10 @@ const StyledBox = styled(Box)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: fit-content;
+  width: 80%;
   box-shadow: 24px;
   background-color: black;
+  color: ${({ theme }) => theme.palette.common.white};
   padding: 1rem;
   border-radius: 0.3rem;
 `;
