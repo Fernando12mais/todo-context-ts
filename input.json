@@ -1,0 +1,25 @@
+{
+  "todos": [
+    { "id": 1, "content": "Organized my tasks", "checked": true },
+    { "id": 2, "content": "Meditated", "checked": false },
+    { "id": 3, "content": "Worked out", "checked": true },
+    {
+      "id": 4,
+      "content": { "title": "Planned next week's schedule" },
+      "checked": true
+    },
+    { "id": 4, "content": "Completed project proposal", "checked": false },
+    { "id": 5, "content": "Reviewed code", "checked": true },
+    { "id": 6, "content": "Attended team meeting", "checked": false },
+    { "id": 7, "content": "Read a book", "checked": true },
+    { "id": 8, "content": "Updated my resume", "checked": false },
+    { "id": 9, "content": "Went grocery shopping", "checked": true },
+    { "content": "Planned next week's schedule", "checked": true },
+    { "id": 10, "content": "Cooked dinner", "checked": false },
+    { "id": 11, "content": "Watered the plants", "checked": true },
+    { "id": 12, "content": "Called family", "checked": false },
+    { "id": 13, "content": "Cleaned the house", "checked": true },
+    { "id": 14, "content": "Planned next week's schedule", "checked": 1 },
+    { "id": 15, "content": "Finished online course", "checked": false }
+  ]
+}
