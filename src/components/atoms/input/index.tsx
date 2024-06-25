@@ -20,9 +20,18 @@ export default forwardRef<
 >(function Input({ errorMessage, ...props }, ref) {
   return (
     <Container>
-      <TextField error={!!errorMessage} {...props} ref={ref} />
+      <TextField
+        data-cy={`input-${props.name}`}
+        error={!!errorMessage}
+        {...props}
+        ref={ref}
+      />
       {errorMessage && (
-        <ErrorMessage variant="caption" color="red">
+        <ErrorMessage
+          data-cy={`error-${props.name}`}
+          variant="caption"
+          color="red"
+        >
           {errorMessage}
         </ErrorMessage>
       )}

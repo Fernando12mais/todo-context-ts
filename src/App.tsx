@@ -1,12 +1,13 @@
 import "./App.css";
 
 import {
-  Button,
   ThemeProvider,
   Typography,
   createTheme,
   useMediaQuery,
 } from "@mui/material";
+
+import Button from "./components/atoms/button";
 import styled from "@emotion/styled";
 
 import {
@@ -50,17 +51,21 @@ import { validateContent, validateRow } from "./utils";
 const minChars = 3;
 
 const TableIcons: Icons = {
-  Add: forwardRef((props, ref) => <AddRounded {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Add: forwardRef((props, ref) => (
+    <AddRounded data-cy="btn-add" {...props} ref={ref} />
+  )),
+  Check: forwardRef((props, ref) => (
+    <Check data-cy="btn-check" {...props} ref={ref} />
+  )),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => (
-    <DeleteOutline color="error" {...props} ref={ref} />
+    <DeleteOutline data-cy="btn-delete" color="error" {...props} ref={ref} />
   )),
   DetailPanel: forwardRef((props, ref) => (
     <ChevronRight {...props} ref={ref} />
   )),
   Edit: forwardRef((props, ref) => (
-    <Edit color="primary" {...props} ref={ref} />
+    <Edit data-cy="btn-edit" color="primary" {...props} ref={ref} />
   )),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
@@ -155,6 +160,7 @@ function App() {
                 textDecoration: rowData?.checked ? "line-through" : "",
                 fontWeight: rowData?.checked ? 700 : 400,
               }),
+
               customFilterAndSearch: (filter, rowData) =>
                 rowData.content.toLowerCase().startsWith(filter.toLowerCase()),
               validate: (rowData) => validateContent(rowData.content, minChars),
@@ -164,6 +170,7 @@ function App() {
           components={{
             EditField: (props) => (
               <Input
+                name={"create-task"}
                 autoFocus
                 onChange={(e) => props.onChange(e.target.value)}
                 value={props.value || ""}
@@ -189,7 +196,10 @@ function App() {
             (rowData) => ({
               tooltip: "Mark as done",
               icon: () => (
-                <Done color={rowData.checked ? "success" : "action"} />
+                <Done
+                  data-cy="btn-done"
+                  color={rowData.checked ? "success" : "action"}
+                />
               ),
               onClick: () => handleToggleChecked(rowData.id),
             }),
@@ -204,16 +214,21 @@ function App() {
           actions={[
             (rowData) => ({
               Icon: () => (
-                <Done color={rowData.checked ? "success" : "action"} />
+                <Done
+                  data-cy="btn-done"
+                  color={rowData.checked ? "success" : "action"}
+                />
               ),
               onClick: () => handleToggleChecked(rowData.id),
             }),
             (rowData) => ({
-              Icon: () => <Edit color={"primary"} />,
+              Icon: () => <Edit data-cy="btn-edit" color={"primary"} />,
               onClick: () => setModal({ open: true, editing: rowData }),
             }),
             (rowData) => ({
-              Icon: () => <DeleteOutline color={"error"} />,
+              Icon: () => (
+                <DeleteOutline data-cy="btn-delete" color={"error"} />
+              ),
               onClick: () => handleDeleteTask(rowData.id),
             }),
           ]}
@@ -229,6 +244,7 @@ function App() {
           </ModalHeader>
           <StyledModalForm onSubmit={handleSubmitForm}>
             <Input
+              name="create-task"
               defaultValue={modal.editing?.content}
               errorMessage={errorMessage}
               inputRef={modalInputRef}
@@ -236,7 +252,9 @@ function App() {
                 if (errorMessage) setErrorMessage("");
               }}
             />
-            <Button type="submit">Add task</Button>
+            <Button name="submit" type="submit">
+              Add task
+            </Button>
           </StyledModalForm>
         </div>
       </Modal>

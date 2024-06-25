@@ -41,13 +41,18 @@ export default function TaskCard(props: TaskCardProps) {
       <CardHeader
         title={props.title}
         action={
-          <IconButton onClick={props.onAddItem} aria-label="add-task">
+          <IconButton
+            data-cy="btn-add-task"
+            onClick={props.onAddItem}
+            aria-label="add-task"
+          >
             <AddRounded />
           </IconButton>
         }
       />
 
       <Input
+        name="search"
         onChange={(e) => props.onFilterChange(e.target.value)}
         placeholder="Search"
         InputProps={{ startAdornment: <Search /> }}
@@ -66,8 +71,9 @@ export default function TaskCard(props: TaskCardProps) {
       >
         {!props.data.length
           ? "No records to display"
-          : props.data.map((todo) => (
+          : props.data.map((todo, index) => (
               <StyledItem
+                data-cy={`card-row-${index}`}
                 $completedColor={theme.palette.common.black}
                 $completed={todo.checked}
                 $borderColor={theme.palette.grey["500"]}
