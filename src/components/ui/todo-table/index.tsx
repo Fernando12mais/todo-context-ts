@@ -12,8 +12,8 @@ type Props = MaterialTableProps<TodoEntry>;
 
 export default function TodoTable() {
   const {
+    filteredTodosBySearch,
     handleDeleteAllTasks,
-    sortedTodos,
     handleUpdateTask,
     handleCreateTask,
     handleDeleteTask,
@@ -84,7 +84,7 @@ export default function TodoTable() {
       title="My todo list"
       onSearchChange={handleSearchChange}
       columns={columns}
-      data={sortedTodos}
+      data={filteredTodosBySearch}
       editable={editable}
       actions={actions}
       components={components}

@@ -24,6 +24,7 @@ import {
   Search,
 } from "@mui/icons-material";
 import { forwardRef } from "react";
+import useTodos from "../../../hooks/use-todos";
 
 const TableIcons: Icons = {
   Add: forwardRef((props, ref) => (
@@ -61,6 +62,7 @@ const TableIcons: Icons = {
 export default function MaterialTable<T extends Object>(
   props: MaterialTableProps<T>
 ) {
+  const { search } = useTodos();
   const theme = useTheme() as Theme;
 
   return (
@@ -73,6 +75,7 @@ export default function MaterialTable<T extends Object>(
         rowStyle: (data) => ({
           background: data.checked ? theme.palette.common.black : "",
         }),
+        searchText: search,
       }}
       {...props}
     />

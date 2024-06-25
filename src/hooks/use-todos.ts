@@ -1,6 +1,6 @@
 // import axios from "axios";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import input from "../../input.json";
 import { useTodoContext } from "../context/todo-context";
 import {
@@ -27,7 +27,7 @@ export default function useTodos(options?: { minChars: number }) {
 
   const handleSearchChange = (value: string) => setParams({ q: value });
 
-  const filterTodosBySearch = useCallback(() => {
+  const filteredTodosBySearch = useMemo(() => {
     return sortedTodos.filter((todo) => searchRule(todo.content, search));
   }, [search, sortedTodos]);
 
@@ -119,7 +119,7 @@ export default function useTodos(options?: { minChars: number }) {
     handleToggleChecked,
     handleDeleteTask,
     handleSearchChange,
-    filterTodosBySearch,
+    filteredTodosBySearch,
     handleDeleteAllTasks,
     search,
     sortedTodos,

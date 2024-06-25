@@ -209,6 +209,7 @@ export default function TaskCard(props: TaskCardProps) {
           </ModalHeader>
           <StyledModalForm onSubmit={handleSubmitForm}>
             <Input
+              autoFocus
               name="create-task"
               defaultValue={modal.editing?.content}
               errorMessage={errorMessage}
