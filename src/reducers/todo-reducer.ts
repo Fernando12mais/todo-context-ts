@@ -16,8 +16,16 @@ export default function todoReducer(state: TodoEntry[], action: TodoAction) {
       return state.map((todo) =>
         todo.id == action.payload.id ? { ...action.payload } : todo
       );
-    case "DELETE":
-      return state.filter((todo) => todo.id != action.payload.id);
+    case "DELETE": {
+      const filteredState = state.filter(
+        (todo) => todo.id != action.payload.id
+      );
+
+      if (filteredState.length < 1)
+        localStorage.setItem("deletedAllItems", "1");
+      return filteredState;
+    }
+
     case "FETCH":
       return action.payload;
     case "TOGGLE-CHECKED":

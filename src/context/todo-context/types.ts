@@ -7,11 +7,17 @@ export type TodoInitialState = {
 export type TodoEntry = { id: number; content: string; checked: boolean };
 
 export type TodoAction =
-  | { type: "CREATE"; payload: Pick<TodoEntry, "content"> }
-  | { type: "UPDATE"; payload: TodoEntry }
+  | TodoActionCreateOrUpdate
   | { type: "DELETE"; payload: Pick<TodoEntry, "id"> }
   | { type: "FETCH"; payload: TodoEntry[] }
   | { type: "TOGGLE-CHECKED"; payload: Pick<TodoEntry, "id"> };
+
+export type TodoActionCreateOrUpdate =
+  | { type: "CREATE"; payload: TodoActionCreatePayload }
+  | { type: "UPDATE"; payload: TodoActionUpdatePayload };
+
+export type TodoActionCreatePayload = Pick<TodoEntry, "content">;
+export type TodoActionUpdatePayload = TodoEntry;
 
 export type TodoPayloads = {
   create: Pick<TodoEntry, "content">;

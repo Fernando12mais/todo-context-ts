@@ -1,4 +1,10 @@
-import { AddRounded, Search } from "@mui/icons-material";
+import {
+  AddRounded,
+  DeleteOutline,
+  Done,
+  Edit,
+  Search,
+} from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -10,8 +16,15 @@ import {
 import Input from "../../atoms/input";
 import { TaskCardProps } from "./types";
 import styled from "@emotion/styled";
+import Modal from "../../molecules/modal/modal";
+import ModalHeader from "../../molecules/modal/header";
+import Button from "../../atoms/button";
+import { FormEvent, useRef, useState } from "react";
+import { TodoEntry } from "../../../context/todo-context/types";
+import { transientOptions, validateRow } from "../../../utils";
+import useTodos from "../../../hooks/use-todos";
 
-const StyledItem = styled(Box)<{
+const StyledItem = styled(Box, transientOptions)<{
   $borderColor: string;
   $completed?: boolean;
   $completedColor?: string;
@@ -26,24 +39,112 @@ const StyledItem = styled(Box)<{
     $completed ? $completedColor : ""};
 `;
 
+const StyledModalForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const StyledCard = styled(Card)`
+  border-radius: 0;
+  padding: 1rem;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 1rem;
+`;
+
+const StyledListWrapper = styled.ul`
+  flex: 1;
+  liststyle: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+`;
+
+const StyledTypography = styled(Typography, transientOptions)<{
+  $checked?: boolean;
+}>`
+  max-width: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: ${({ $checked }) => ($checked ? "line-through" : "")};
+`;
+
 export default function TaskCard(props: TaskCardProps) {
   const theme = useTheme();
+
+  const [modal, setModal] = useState<{ open: boolean; editing?: TodoEntry }>({
+    open: false,
+  });
+  const {
+    handleCreateTask,
+    handleUpdateTask,
+    minChars,
+    handleSearchChange,
+    handleDeleteTask,
+    handleToggleChecked,
+  } = useTodos();
+
+  const modalInputRef = useRef<HTMLInputElement>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleCloseModal = () => setModal({ open: false });
+
+  const handleSubmitForm = (e: FormEvent) => {
+    e.preventDefault();
+    if (!modalInputRef.current) return;
+
+    const isValid = validateRow(modalInputRef.current.value, minChars);
+    if (!isValid) return setErrorMessage(`Add at least ${minChars} characters`);
+    if (!modal.editing) {
+      handleCreateTask({ content: modalInputRef.current.value });
+      handleCloseModal();
+      return;
+    }
+    handleUpdateTask({
+      ...modal.editing,
+      content: modalInputRef.current.value,
+    });
+    handleCloseModal();
+  };
+
+  const defaultActions: TaskCardProps["actions"] = props.noDefaultActions
+    ? []
+    : [
+        (rowData) => ({
+          Icon: () => (
+            <Done
+              data-cy="btn-done"
+              color={rowData.checked ? "success" : "action"}
+            />
+          ),
+          onClick: () => handleToggleChecked(rowData.id),
+        }),
+        (rowData) => ({
+          Icon: () => <Edit data-cy="btn-edit" color={"primary"} />,
+          onClick: () => setModal({ open: true, editing: rowData }),
+        }),
+        (rowData) => ({
+          Icon: () => <DeleteOutline data-cy="btn-delete" color={"error"} />,
+          onClick: () => handleDeleteTask(rowData.id),
+        }),
+      ];
+
+  const actions = [...defaultActions, ...(props.actions || [])];
   return (
-    <Card
-      style={{
-        borderRadius: 0,
-        padding: "1rem",
-        height: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <StyledCard>
       <CardHeader
         title={props.title}
         action={
           <IconButton
             data-cy="btn-add-task"
-            onClick={props.onAddItem}
+            onClick={() => setModal({ open: true })}
             aria-label="add-task"
           >
             <AddRounded />
@@ -51,24 +152,17 @@ export default function TaskCard(props: TaskCardProps) {
         }
       />
 
-      <Input
+      <StyledInput
         name="search"
-        onChange={(e) => props.onFilterChange(e.target.value)}
+        onChange={(e) => {
+          handleSearchChange(e.target.value);
+          if (props.onFilterChange) props.onFilterChange(e.target.value);
+        }}
         placeholder="Search"
         InputProps={{ startAdornment: <Search /> }}
-        style={{ marginBottom: "1rem" }}
       />
 
-      <ul
-        style={{
-          flex: 1,
-          listStyle: "none",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          overflow: "auto",
-        }}
-      >
+      <StyledListWrapper>
         {!props.data.length
           ? "No records to display"
           : props.data.map((todo, index) => (
@@ -79,20 +173,11 @@ export default function TaskCard(props: TaskCardProps) {
                 $borderColor={theme.palette.grey["500"]}
                 key={todo.id}
               >
-                <Typography
-                  style={{
-                    maxWidth: "50%",
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textDecoration: todo.checked ? "line-through" : "",
-                  }}
-                  variant="caption"
-                >
+                <StyledTypography $checked={todo.checked} variant="caption">
                   {todo.content}
-                </Typography>
+                </StyledTypography>
                 <div>
-                  {props.actions.map((action, index) => {
+                  {actions.map((action, index) => {
                     const { Icon, onClick } = action(todo);
                     return (
                       <IconButton key={index} onClick={onClick}>
@@ -103,7 +188,29 @@ export default function TaskCard(props: TaskCardProps) {
                 </div>
               </StyledItem>
             ))}
-      </ul>
-    </Card>
+      </StyledListWrapper>
+
+      <Modal onClose={handleCloseModal} open={modal.open}>
+        <div>
+          <ModalHeader>
+            <Typography variant="h5" style={{ textAlign: "center" }}>
+              {modal.editing ? "Update task" : "New Task"}
+            </Typography>
+          </ModalHeader>
+          <StyledModalForm onSubmit={handleSubmitForm}>
+            <Input
+              name="create-task"
+              defaultValue={modal.editing?.content}
+              errorMessage={errorMessage}
+              inputRef={modalInputRef}
+              onChange={() => (errorMessage ? setErrorMessage("") : "")}
+            />
+            <Button name="submit" type="submit">
+              Add task
+            </Button>
+          </StyledModalForm>
+        </div>
+      </Modal>
+    </StyledCard>
   );
 }
