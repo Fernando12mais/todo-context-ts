@@ -28,6 +28,9 @@ export default function todoReducer(state: TodoEntry[], action: TodoAction) {
 
     case "FETCH":
       return action.payload;
+    case "DELETE_ALL":
+      localStorage.setItem("deletedAllItems", "1");
+      return [];
     case "TOGGLE-CHECKED":
       return state.map((todo) =>
         todo.id == action.payload.id

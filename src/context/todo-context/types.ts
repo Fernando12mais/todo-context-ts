@@ -8,6 +8,7 @@ export type TodoEntry = { id: number; content: string; checked: boolean };
 
 export type TodoAction =
   | TodoActionCreateOrUpdate
+  | { type: "DELETE_ALL" }
   | { type: "DELETE"; payload: Pick<TodoEntry, "id"> }
   | { type: "FETCH"; payload: TodoEntry[] }
   | { type: "TOGGLE-CHECKED"; payload: Pick<TodoEntry, "id"> };

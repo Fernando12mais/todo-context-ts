@@ -1,4 +1,4 @@
-import { Done } from "@mui/icons-material";
+import { DeleteOutline, Done } from "@mui/icons-material";
 import useTodos from "../../../hooks/use-todos";
 
 import MaterialTable from "../../organisms/material-table";
@@ -12,6 +12,7 @@ type Props = MaterialTableProps<TodoEntry>;
 
 export default function TodoTable() {
   const {
+    handleDeleteAllTasks,
     sortedTodos,
     handleUpdateTask,
     handleCreateTask,
@@ -33,6 +34,12 @@ export default function TodoTable() {
       ),
       onClick: () => handleToggleChecked(rowData.id),
     }),
+    {
+      isFreeAction: true,
+      position: "toolbar",
+      icon: () => <DeleteOutline color="error" data-cy="btn-delete-all" />,
+      onClick: () => handleDeleteAllTasks(),
+    },
   ];
 
   const columns: Props["columns"] = [
@@ -52,7 +59,6 @@ export default function TodoTable() {
   const editable: Props["editable"] = {
     onRowDelete: async (oldData) => handleDeleteTask(oldData.id),
     onRowUpdate: async (newData) => handleUpdateTask(newData, true),
-
     onRowAdd: async (rowData) => handleCreateTask(rowData, true),
   };
   const components: Props["components"] = {

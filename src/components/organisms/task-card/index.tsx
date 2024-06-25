@@ -89,6 +89,7 @@ export default function TaskCard(props: TaskCardProps) {
     handleSearchChange,
     handleDeleteTask,
     handleToggleChecked,
+    handleDeleteAllTasks,
   } = useTodos();
 
   const modalInputRef = useRef<HTMLInputElement>(null);
@@ -142,13 +143,22 @@ export default function TaskCard(props: TaskCardProps) {
       <CardHeader
         title={props.title}
         action={
-          <IconButton
-            data-cy="btn-add-task"
-            onClick={() => setModal({ open: true })}
-            aria-label="add-task"
-          >
-            <AddRounded />
-          </IconButton>
+          <>
+            <IconButton
+              data-cy="btn-add-task"
+              onClick={() => setModal({ open: true })}
+              aria-label="add-task"
+            >
+              <AddRounded />
+            </IconButton>
+            <IconButton
+              data-cy="btn-remove-all-task"
+              onClick={() => handleDeleteAllTasks()}
+              aria-label="remove-all-task"
+            >
+              <DeleteOutline color="error" />
+            </IconButton>
+          </>
         }
       />
 

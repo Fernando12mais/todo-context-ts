@@ -108,6 +108,8 @@ export default function useTodos(options?: { minChars: number }) {
   const handleDeleteTask = (id: number) =>
     dispatch({ type: "DELETE", payload: { id } });
 
+  const handleDeleteAllTasks = () => dispatch({ type: "DELETE_ALL" });
+
   return {
     fetchTodos,
     todos,
@@ -118,6 +120,7 @@ export default function useTodos(options?: { minChars: number }) {
     handleDeleteTask,
     handleSearchChange,
     filterTodosBySearch,
+    handleDeleteAllTasks,
     search,
     sortedTodos,
     minChars,
