@@ -34,7 +34,7 @@ const TableIcons: Icons = {
   )),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => (
-    <DeleteOutline data-cy="btn-delete" color="error" {...props} ref={ref} />
+    <DeleteOutline color="error" {...props} ref={ref} />
   )),
   DetailPanel: forwardRef((props, ref) => (
     <ChevronRight {...props} ref={ref} />

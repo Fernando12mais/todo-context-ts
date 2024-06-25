@@ -22,17 +22,26 @@ describe("Should cover all functionalities from the todo list app in desktop env
     cy.getByDataCy("error-create-task").should("be.visible");
   });
 
-  it("should delete a task", () => {
+  it("Should delete a task", () => {
     cy.get("tbody tr td")
       .eq(1)
       .then((el) => {
+        const text = el.text();
         cy.getByDataCy("btn-delete").first().click();
-        cy.getByDataCy("btn-check").click();
-        cy.wait(500).then(() => expect(el).to.not.exist);
+        cy.get("tbody tr td").each((td) => {
+          expect(td.text()).not.equal(text);
+        });
       });
   });
 
-  it("should edit a task", () => {
+  it("Should delete all tasks", () => {
+    cy.get("tbody tr td").each((el, index) => {
+      if (index == 0) cy.getByDataCy("btn-delete-all").click();
+      cy.wrap(el).should("not.exist");
+    });
+  });
+
+  it("Should edit a task", () => {
     const updateText = "task updated";
     cy.getByDataCy("btn-edit").first().click();
     cy.getByDataCy("input-create-task").find("input").clear().type(updateText);
@@ -54,7 +63,7 @@ describe("Should cover all functionalities from the todo list app in desktop env
       });
   });
 
-  it("should mark an item as done", () => {
+  it("Should mark an item as done", () => {
     cy.getByDataCy("btn-done").first().click();
     cy.getByDataCy("btn-done").each((el) => {
       cy.wrap(el)
@@ -98,6 +107,13 @@ describe("Should cover all functionalities from the todo list app in mobile envi
     cy.getByDataCy("card-row-0").then((el) => {
       cy.getByDataCy("btn-delete").first().click();
       cy.wait(500).then(() => expect(el).to.not.exist);
+    });
+  });
+
+  it("Should delete all tasks", () => {
+    cy.get("[data-cy*='card-row']").each((el, index) => {
+      if (index == 0) cy.getByDataCy("btn-delete-all").click();
+      cy.wrap(el).should("not.exist");
     });
   });
 

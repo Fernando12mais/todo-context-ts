@@ -152,7 +152,7 @@ export default function TaskCard(props: TaskCardProps) {
               <AddRounded />
             </IconButton>
             <IconButton
-              data-cy="btn-remove-all-task"
+              data-cy="btn-delete-all"
               onClick={() => handleDeleteAllTasks()}
               aria-label="remove-all-task"
             >

@@ -34,6 +34,11 @@ export default function TodoTable() {
       ),
       onClick: () => handleToggleChecked(rowData.id),
     }),
+    (rowData) => ({
+      tooltip: "Delete a task",
+      icon: () => <DeleteOutline data-cy="btn-delete" color={"error"} />,
+      onClick: () => handleDeleteTask(rowData.id),
+    }),
     {
       isFreeAction: true,
       position: "toolbar",
@@ -57,7 +62,6 @@ export default function TodoTable() {
   ];
 
   const editable: Props["editable"] = {
-    onRowDelete: async (oldData) => handleDeleteTask(oldData.id),
     onRowUpdate: async (newData) => handleUpdateTask(newData, true),
     onRowAdd: async (rowData) => handleCreateTask(rowData, true),
   };
