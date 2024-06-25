@@ -90,6 +90,7 @@ export default function TaskCard(props: TaskCardProps) {
     handleDeleteTask,
     handleToggleChecked,
     handleDeleteAllTasks,
+    search,
   } = useTodos();
 
   const modalInputRef = useRef<HTMLInputElement>(null);
@@ -170,6 +171,7 @@ export default function TaskCard(props: TaskCardProps) {
         }}
         placeholder="Search"
         InputProps={{ startAdornment: <Search /> }}
+        defaultValue={search}
       />
 
       <StyledListWrapper>
