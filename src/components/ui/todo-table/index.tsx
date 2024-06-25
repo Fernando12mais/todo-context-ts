@@ -40,6 +40,7 @@ export default function TodoTable() {
       onClick: () => handleDeleteTask(rowData.id),
     }),
     {
+      tooltip: "Delete all tasks",
       isFreeAction: true,
       position: "toolbar",
       icon: () => <DeleteOutline color="error" data-cy="btn-delete-all" />,
@@ -51,11 +52,11 @@ export default function TodoTable() {
     {
       title: "Content",
       field: "content",
-      cellStyle: (data, rowData) => ({
+      cellStyle: (_, rowData) => ({
         textDecoration: rowData?.checked ? "line-through" : "",
         fontWeight: rowData?.checked ? 700 : 400,
       }),
-      customFilterAndSearch: (filter, rowData) =>
+      customFilterAndSearch: (_, rowData) =>
         searchRule(rowData.content, search),
       validate: (rowData) => validateRow(rowData.content, minChars),
     },
