@@ -106,7 +106,7 @@ describe("Should cover all functionalities from the todo list app in mobile envi
     cy.getByDataCy("error-create-task").should("be.visible");
   });
 
-  it("should delete a task", () => {
+  it("Should delete a task", () => {
     cy.getByDataCy("card-row-0").then((el) => {
       cy.getByDataCy("btn-delete").first().click();
       cy.wait(500).then(() => expect(el).to.not.exist);
@@ -142,7 +142,7 @@ describe("Should cover all functionalities from the todo list app in mobile envi
     });
   });
 
-  it("should mark an item as done", () => {
+  it("Should mark an item as done", () => {
     cy.getByDataCy("card-row-0").then((el) => {
       cy.getByDataCy("btn-done").first().click();
 
