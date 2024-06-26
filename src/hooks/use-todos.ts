@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 
 import { useMemo } from "react";
 import input from "../../input.json";
@@ -46,6 +46,9 @@ export default function useTodos(options?: { minChars: number }) {
     return [];
   };
 
+  const filterInitialTodos = (data: TodoEntry[]) =>
+    data.filter((todo) => typeof todo.content == "string" && todo.id);
+
   const fetchTodos = async () => {
     const cachedTodos = getCachedTodos();
     const alreadyVisited = localStorage.getItem("alreadyVisited");
@@ -55,24 +58,23 @@ export default function useTodos(options?: { minChars: number }) {
 
       return cachedTodos;
     }
-    // try {
-    //   const res = await axios.get(
-    //     "https://everest-interview-public-files.s3.amazonaws.com/input.json"
-    //   );
-
-    //   console.log(res.data);
-    // } catch (e) {
-    //   console.log(e.message);
-    // }
     localStorage.setItem("alreadyVisited", "1");
+    try {
+      const res = await axios.get(
+        "https://everest-interview-public-files.s3.amazonaws.com/input.json"
+      );
 
-    const filteredTodos = input.todos.filter(
-      (todo) => typeof todo.content == "string" && todo.id
-    ) as TodoEntry[];
-    dispatch({ payload: filteredTodos, type: "FETCH" });
-    localStorage.setItem("todos", JSON.stringify(filteredTodos));
+      const filteredTodos = filterInitialTodos(res.data.todos);
+      dispatch({ payload: filteredTodos, type: "FETCH" });
+      localStorage.setItem("todos", JSON.stringify(filteredTodos));
+      return filteredTodos;
+    } catch (e) {
+      const filteredTodos = filterInitialTodos(input.todos as TodoEntry[]);
+      dispatch({ payload: filteredTodos, type: "FETCH" });
+      localStorage.setItem("todos", JSON.stringify(filteredTodos));
 
-    return filteredTodos;
+      return filteredTodos;
+    }
   };
 
   const handleCreateOrUpdateTask = (
