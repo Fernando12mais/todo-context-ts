@@ -9,6 +9,18 @@ There is an error on the server that provide the initial data, it is blocking my
 
 Live [Demo](https://todo-context-ts.vercel.app/)
 
+
+# Lighthouse Score
+
+## Desktop
+
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/5fa22021-ca7a-414e-b371-67d366e4749f)
+
+## Mobile
+
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/97ee8b0e-8f49-4fff-b93d-6d4827dce3e5)
+
+
 ## Installing dependencies
 ```
 yarn install
