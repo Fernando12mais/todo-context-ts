@@ -46,8 +46,14 @@ export default function useTodos(options?: { minChars: number }) {
     return [];
   };
 
-  const filterInitialTodos = (data: TodoEntry[]) =>
-    data.filter((todo) => typeof todo.content == "string" && todo.id);
+  const filterInitialTodos = (data: TodoEntry[]) => {
+    const filteredTodos = data.filter(
+      (todo) => typeof todo.content == "string" && todo.id
+    );
+    dispatch({ payload: filteredTodos, type: "FETCH" });
+    localStorage.setItem("todos", JSON.stringify(filteredTodos));
+    return filteredTodos;
+  };
 
   const fetchTodos = async () => {
     const cachedTodos = getCachedTodos();
@@ -64,16 +70,9 @@ export default function useTodos(options?: { minChars: number }) {
         "https://everest-interview-public-files.s3.amazonaws.com/input.json"
       );
 
-      const filteredTodos = filterInitialTodos(res.data.todos);
-      dispatch({ payload: filteredTodos, type: "FETCH" });
-      localStorage.setItem("todos", JSON.stringify(filteredTodos));
-      return filteredTodos;
+      return filterInitialTodos(res.data.todos);
     } catch (e) {
-      const filteredTodos = filterInitialTodos(input.todos as TodoEntry[]);
-      dispatch({ payload: filteredTodos, type: "FETCH" });
-      localStorage.setItem("todos", JSON.stringify(filteredTodos));
-
-      return filteredTodos;
+      return filterInitialTodos(input.todos as TodoEntry[]);
     }
   };
 
