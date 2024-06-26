@@ -21,15 +21,20 @@ export default function todoReducer(state: TodoEntry[], action: TodoAction) {
         (todo) => todo.id != action.payload.id
       );
 
-      if (filteredState.length < 1)
-        localStorage.setItem("deletedAllItems", "1");
+      if (typeof localStorage !== "undefined") {
+        if (filteredState.length < 1)
+          localStorage.setItem("deletedAllItems", "1");
+      }
+
       return filteredState;
     }
 
     case "FETCH":
       return action.payload;
     case "DELETE_ALL":
-      localStorage.setItem("deletedAllItems", "1");
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("deletedAllItems", "1");
+      }
       return [];
     case "TOGGLE-CHECKED":
       return state.map((todo) =>

@@ -38,6 +38,14 @@ describe("Should test all cases for todoReducer function", () => {
     expect(newState.find((task) => task.id == taskToDelete.id)).toBeFalsy();
   });
 
+  test("Should Remove all tasks", () => {
+    const newState = todoReducer(initialState, {
+      type: "DELETE_ALL",
+    });
+
+    expect(newState.length).toBe(0);
+  });
+
   test("Should replace the initialState with the new fetched one", () => {
     const fetchedState: TodoEntry[] = [
       { id: 5, checked: true, content: "test" },
