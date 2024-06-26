@@ -1,30 +1,62 @@
-# React + TypeScript + Vite
+# Important!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+There is an error on the server that provide the initial data, it is blocking my request because i have a different origin from the resource origin, as a workaround i downloaded the initial input and stored it into a JSON file, then loaded from there if the endpoint gives me an error.
 
-Currently, two official plugins are available:
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/708c3e85-091e-46ea-ab57-86574416278c)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+# Todo list app
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Live [Demo](https://todo-context-ts.vercel.app/)
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Installing dependencies
+```
+yarn install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Testing the app
+
+### Run unit tests
+```
+yarn test:unit
+```
+
+### Run e2e tests (terminal)
+
+```
+yarn test:e2e-run
+```
+
+### Run e2e tests (interface)
+
+```
+yarn test:e2e
+```
+
+## Screenshots
+### E2E Tests
+
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/4c4310de-20a1-471e-a8ae-bf7077b11353)
+
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/7fdb1fc3-9e39-4c4a-9e3e-c74c29f2133b)
+
+### Unit Tests
+![image](https://github.com/Fernando12mais/todo-context-ts/assets/86564450/655224ba-a18b-44b2-90cc-a0b92528e466)
+
+
+## Features
+- Create task
+- Edit task
+- Delete task
+- Delete all tasks
+- Mark tasks as done
+- Filter tasks by name
+- Responsiveness (Mobile, Tablet,Desktop)
+- Pagination (Desktop)
+- Select rows per page (Desktop)
+- Validation when creating task
+- Tasks sorted by undone first
+
+
+
+
