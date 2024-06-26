@@ -113,7 +113,7 @@ describe("Should cover all functionalities from the todo list app in mobile envi
     });
   });
 
-  it.only("Should delete all tasks", () => {
+  it("Should delete all tasks", () => {
     cy.get("[data-cy*='card-row']").each((el, index) => {
       if (index == 0) {
         cy.getByDataCy("btn-delete-all").click();
