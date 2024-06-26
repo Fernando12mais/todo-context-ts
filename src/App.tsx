@@ -1,14 +1,31 @@
 import "./App.css";
 
-import { ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
+import { Card, ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import useTodos from "./hooks/use-todos";
 
-import TodoTable from "./components/ui/todo-table";
-import TodoCard from "./components/ui/todo-card";
+import { lazy } from "react";
+import styled from "@emotion/styled";
+import Loading from "./components/ui/loading";
 
+const TodoTable = lazy(() => import("./components/ui/todo-table"));
+const TodoCard = lazy(() => import("./components/ui/todo-card"));
+
+const StyledCard = styled(Card)`
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
 function App() {
   const { fetchTodos } = useTodos();
 
@@ -22,7 +39,17 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {!isMobile ? <TodoTable /> : <TodoCard />}
+      <StyledCard>
+        <Suspense
+          fallback={
+            <LoadingWrapper>
+              <Loading />
+            </LoadingWrapper>
+          }
+        >
+          {!isMobile ? <TodoTable /> : <TodoCard />}
+        </Suspense>
+      </StyledCard>
     </ThemeProvider>
   );
 }
