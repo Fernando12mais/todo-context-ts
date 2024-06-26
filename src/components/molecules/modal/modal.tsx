@@ -11,6 +11,7 @@ const StyledBox = styled(Box)`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  max-width: 25rem;
   box-shadow: 24px;
   background-color: black;
   color: ${({ theme }) => theme.palette.common.white};

@@ -7,13 +7,15 @@ import type { MaterialTableProps } from "material-table";
 import type { TodoEntry } from "../../../context/todo-context/types";
 import { searchRule, validateRow } from "../../../utils";
 import Input from "../../atoms/input";
+import DeleteTodoModal from "../delete-todo-modal";
+import { DeleteTodoModalRef } from "../delete-todo-modal/types";
+import { useRef } from "react";
 
 type Props = MaterialTableProps<TodoEntry>;
 
 export default function TodoTable() {
   const {
     filteredTodosBySearch,
-    handleDeleteAllTasks,
     handleUpdateTask,
     handleCreateTask,
     handleDeleteTask,
@@ -44,7 +46,7 @@ export default function TodoTable() {
       isFreeAction: true,
       position: "toolbar",
       icon: () => <DeleteOutline color="error" data-cy="btn-delete-all" />,
-      onClick: () => handleDeleteAllTasks(),
+      onClick: () => deleteTodoModalRef.current?.open(),
     },
   ];
 
@@ -78,16 +80,21 @@ export default function TodoTable() {
     ),
   };
 
+  const deleteTodoModalRef = useRef<DeleteTodoModalRef>(null);
+
   return (
-    <MaterialTable
-      style={{ width: "100%", minHeight: "100dvh", borderRadius: 0 }}
-      title="My todo list"
-      onSearchChange={handleSearchChange}
-      columns={columns}
-      data={filteredTodosBySearch}
-      editable={editable}
-      actions={actions}
-      components={components}
-    />
+    <>
+      <DeleteTodoModal ref={deleteTodoModalRef} />
+      <MaterialTable
+        style={{ width: "100%", minHeight: "100dvh", borderRadius: 0 }}
+        title="My todo list"
+        onSearchChange={handleSearchChange}
+        columns={columns}
+        data={filteredTodosBySearch}
+        editable={editable}
+        actions={actions}
+        components={components}
+      />
+    </>
   );
 }

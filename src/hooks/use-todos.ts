@@ -122,7 +122,6 @@ export default function useTodos(options?: { minChars: number }) {
     filteredTodosBySearch,
     handleDeleteAllTasks,
     search,
-    sortedTodos,
     minChars,
   };
 }

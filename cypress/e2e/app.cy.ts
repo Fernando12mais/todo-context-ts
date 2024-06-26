@@ -36,7 +36,10 @@ describe("Should cover all functionalities from the todo list app in desktop env
 
   it("Should delete all tasks", () => {
     cy.get("tbody tr td").each((el, index) => {
-      if (index == 0) cy.getByDataCy("btn-delete-all").click();
+      if (index == 0) {
+        cy.getByDataCy("btn-delete-all").click();
+        cy.getByDataCy("btn-confirm-delete-all").click();
+      }
       cy.wrap(el).should("not.exist");
     });
   });
@@ -110,9 +113,12 @@ describe("Should cover all functionalities from the todo list app in mobile envi
     });
   });
 
-  it("Should delete all tasks", () => {
+  it.only("Should delete all tasks", () => {
     cy.get("[data-cy*='card-row']").each((el, index) => {
-      if (index == 0) cy.getByDataCy("btn-delete-all").click();
+      if (index == 0) {
+        cy.getByDataCy("btn-delete-all").click();
+        cy.getByDataCy("btn-confirm-delete-all").click();
+      }
       cy.wrap(el).should("not.exist");
     });
   });

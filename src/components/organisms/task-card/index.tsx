@@ -23,6 +23,8 @@ import { FormEvent, useRef, useState } from "react";
 import { TodoEntry } from "../../../context/todo-context/types";
 import { transientOptions, validateRow } from "../../../utils";
 import useTodos from "../../../hooks/use-todos";
+import DeleteTodoModal from "../../ui/delete-todo-modal";
+import { DeleteTodoModalRef } from "../../ui/delete-todo-modal/types";
 
 const StyledItem = styled(Box, transientOptions)<{
   $borderColor: string;
@@ -89,9 +91,10 @@ export default function TaskCard(props: TaskCardProps) {
     handleSearchChange,
     handleDeleteTask,
     handleToggleChecked,
-    handleDeleteAllTasks,
     search,
   } = useTodos();
+
+  const deleteTodoModalRef = useRef<DeleteTodoModalRef>(null);
 
   const modalInputRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -154,7 +157,7 @@ export default function TaskCard(props: TaskCardProps) {
             </IconButton>
             <IconButton
               data-cy="btn-delete-all"
-              onClick={() => handleDeleteAllTasks()}
+              onClick={() => deleteTodoModalRef.current?.open()}
               aria-label="remove-all-task"
             >
               <DeleteOutline color="error" />
@@ -224,6 +227,8 @@ export default function TaskCard(props: TaskCardProps) {
           </StyledModalForm>
         </div>
       </Modal>
+
+      <DeleteTodoModal ref={deleteTodoModalRef} />
     </StyledCard>
   );
 }
