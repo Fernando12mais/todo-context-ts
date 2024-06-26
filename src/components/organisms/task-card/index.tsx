@@ -6,7 +6,6 @@ import {
   Search,
 } from "@mui/icons-material";
 import {
-  Box,
   Card,
   CardHeader,
   IconButton,
@@ -26,7 +25,7 @@ import useTodos from "../../../hooks/use-todos";
 import DeleteTodoModal from "../../ui/delete-todo-modal";
 import { DeleteTodoModalRef } from "../../ui/delete-todo-modal/types";
 
-const StyledItem = styled(Box, transientOptions)<{
+const StyledItem = styled("li", transientOptions)<{
   $borderColor: string;
   $completed?: boolean;
   $completedColor?: string;
@@ -123,8 +122,10 @@ export default function TaskCard(props: TaskCardProps) {
     ? []
     : [
         (rowData) => ({
+          name: "Done",
           Icon: () => (
             <Done
+              name="Done"
               data-cy="btn-done"
               color={rowData.checked ? "success" : "action"}
             />
@@ -132,11 +133,15 @@ export default function TaskCard(props: TaskCardProps) {
           onClick: () => handleToggleChecked(rowData.id),
         }),
         (rowData) => ({
-          Icon: () => <Edit data-cy="btn-edit" color={"primary"} />,
+          name: "Edit",
+          Icon: () => <Edit name="Edit" data-cy="btn-edit" color={"primary"} />,
           onClick: () => setModal({ open: true, editing: rowData }),
         }),
         (rowData) => ({
-          Icon: () => <DeleteOutline data-cy="btn-delete" color={"error"} />,
+          name: "Delete",
+          Icon: () => (
+            <DeleteOutline name="Delete" data-cy="btn-delete" color={"error"} />
+          ),
           onClick: () => handleDeleteTask(rowData.id),
         }),
       ];
@@ -149,6 +154,7 @@ export default function TaskCard(props: TaskCardProps) {
         action={
           <>
             <IconButton
+              name="add-task"
               data-cy="btn-add-task"
               onClick={() => setModal({ open: true })}
               aria-label="add-task"
@@ -156,6 +162,7 @@ export default function TaskCard(props: TaskCardProps) {
               <AddRounded />
             </IconButton>
             <IconButton
+              name="delete-all-task"
               data-cy="btn-delete-all"
               onClick={() => deleteTodoModalRef.current?.open()}
               aria-label="remove-all-task"
@@ -193,9 +200,14 @@ export default function TaskCard(props: TaskCardProps) {
                 </StyledTypography>
                 <div>
                   {actions.map((action, index) => {
-                    const { Icon, onClick } = action(todo);
+                    const { Icon, onClick, name } = action(todo);
                     return (
-                      <IconButton key={index} onClick={onClick}>
+                      <IconButton
+                        aria-label={name}
+                        name={name}
+                        key={index}
+                        onClick={onClick}
+                      >
                         <Icon />
                       </IconButton>
                     );

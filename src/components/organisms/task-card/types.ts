@@ -7,6 +7,7 @@ export type TaskCardProps = {
   actions?: ((data: TodoEntry) => {
     onClick: () => void;
     Icon: () => ReactNode;
+    name: string;
   })[];
   data: TodoEntry[];
   noDefaultActions?: boolean;
